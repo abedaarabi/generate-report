@@ -21,13 +21,33 @@ export default function DataTable({ data, loading, fileName }: any) {
     if (!data) return;
     try {
       const tableData = Object.values(data[value]);
-      const columns = Object.keys(tableData[0]).map((i) => {
-        return {
-          field: i,
-          headerName: i,
+
+      const columns = Object.keys(tableData[0])
+        .map((i) => {
+          if (i === "Sum" || i === "id") {
+            return {
+              field: i,
+              headerName: i,
+              width: 80,
+            };
+          } else if (i === "Basic Wall - Types") {
+            return {
+              field: i,
+              headerName: i,
+              width: 180,
+            };
+          }
+          return {
+            field: i,
+            headerName: i,
+            width: 140,
+          };
+        })
+        .concat({
+          field: "Total Width",
+          headerName: "Total Width",
           width: 140,
-        };
-      });
+        });
       setTableElement({ tableData, columns });
     } catch (error) {}
   };

@@ -15,7 +15,11 @@ const ChartData = ({ data }: any) => {
       {price.length !== 0 && (
         <>
           <h4 style={{ color: "#2196f3" }}>
-            Total Price: {price.reduce((acc, val) => acc + val)}
+            Total Price:{" "}
+            {price.reduce((acc, val) => {
+              acc + val;
+              return acc;
+            })}
           </h4>
           <Line
             height={150}

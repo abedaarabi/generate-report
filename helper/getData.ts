@@ -57,17 +57,20 @@ export function getDate(data) {
 
     if (wallTypes === "Fundament - 900mm") {
       obj1[wWallName][wallTypes]["Total Width"] += totalVolume;
+
       obj1[wWallName][wallTypes].id = wall.externalId;
       obj1[wWallName][wallTypes]["Total Price"] +=
         totalVolume * +wallPrices[wallTypes];
       obj1[wWallName][wallTypes].Sum++;
       obj1[wWallName][wallTypes]["Total Hours"] += hours[wallTypes];
+
       delete obj1[wWallName][wallTypes]["Total Area"];
     } else {
       delete obj1[wWallName][wallTypes]["Total Width"];
       obj1[wWallName][wallTypes].id = wall.externalId;
-      obj1[wWallName][wallTypes]["Total Area"] += Number(totalArea);
+      obj1[wWallName][wallTypes]["Total Area"] += totalArea;
       obj1[wWallName][wallTypes]["Total Hours"] += totalArea * hours[wallTypes];
+
       obj1[wWallName][wallTypes]["Total Price"] +=
         totalArea * +wallPrices[wallTypes];
       obj1[wWallName][wallTypes].Sum++;
