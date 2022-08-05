@@ -6,7 +6,10 @@ import { CategoryScale } from "chart.js";
 const ChartData = ({ data }: any) => {
   Chart.register(CategoryScale);
 
-  const labels = data.map((i) => i["Basic Wall - Types"]);
+  const labels = data.map(
+    (i) =>
+      i["Basic Wall - Types"] || i["Floor - Types"] || i["Basic Roof - Types"]
+  );
   const price = data.map((i) => i["Total Price"]);
   const hours = data.map((i) => i["Total Hours"]);
 
