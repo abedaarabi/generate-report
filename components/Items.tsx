@@ -2,7 +2,7 @@ import * as React from "react";
 import ArticleIcon from "@mui/icons-material/Article";
 import { ItemData } from "./ItemData";
 import LinearIndeterminate from "./Loading";
-import { useGetItemQuery, useItemContentQuery } from "../features/api/getItems";
+import { useGetItemQuery } from "../features/api/getItems";
 
 export interface Project {
   itemId: {
