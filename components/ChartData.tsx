@@ -6,31 +6,36 @@ import { CategoryScale } from "chart.js";
 const ChartData = ({ data }: any) => {
   Chart.register(CategoryScale);
 
-  const labels = data.map((i) => i["Basic Wall - Types"]);
+  const labels = data.map(
+    (i) =>
+      i["Basic Wall - Types"] || i["Floor - Types"] || i["Basic Roof - Types"]
+  );
   const price = data.map((i) => i["Total Price"]);
   const hours = data.map((i) => i["Total Hours"]);
 
   return (
     <div style={{ marginBottom: "1rem" }}>
-      {price.length !== 0 && (
+      {
         <>
           <h4 style={{ color: "#2196f3" }}>
             Total Price:{" "}
-            {price.reduce((acc, val) => {
-              acc + val;
-              return acc;
-            })}
+            {price.length === 0
+              ? "Select element"
+              : price.reduce((acc, val) => {
+                  acc + val;
+                  return acc;
+                })}
           </h4>
           <Line
             height={150}
             width={650}
             datasetIdKey="id"
             data={{
-              labels: labels,
+              labels: labels || [],
               datasets: [
                 {
                   label: "Price",
-                  data: price,
+                  data: price || [],
                   //@ts-ignore
                   backgroundColor: ["rgba(255, 159, 64, 0.2)"],
                   //@ts-ignore
@@ -48,18 +53,21 @@ const ChartData = ({ data }: any) => {
             }}
           />
           <h4 style={{ color: "#2196f3" }}>
-            Total Hours: {hours.reduce((acc, val) => acc + val)}
+            Total Hours:{" "}
+            {hours.length === 0
+              ? "Select element"
+              : hours.reduce((acc, val) => acc + val)}
           </h4>
           <Line
             height={150}
             width={650}
             datasetIdKey="id"
             data={{
-              labels: labels,
+              labels: labels || [],
               datasets: [
                 {
                   label: "Hours",
-                  data: hours,
+                  data: hours || [],
                   //@ts-ignore
                   backgroundColor: ["rgba(255, 99, 132, 0.2)", ,],
                   //@ts-ignore
@@ -77,7 +85,7 @@ const ChartData = ({ data }: any) => {
             }}
           />
         </>
-      )}
+      }
     </div>
   );
 };

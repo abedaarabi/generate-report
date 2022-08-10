@@ -2,6 +2,7 @@ import * as React from "react";
 import ArticleIcon from "@mui/icons-material/Article";
 import { ItemData } from "./ItemData";
 import LinearIndeterminate from "./Loading";
+import { useGetItemQuery } from "../features/api/getItems";
 
 export interface Project {
   itemId: {
@@ -31,27 +32,11 @@ export interface RootObject {
   publishStatus: string;
 }
 export const Items = ({ itemId }: Project) => {
-  const [loading, setLoading] = React.useState(false);
-  const [itemsDetails, setItemsDetails] = React.useState<RootObject[]>([]);
-  const [ItemById, setItemById] = React.useState<RootObject>("");
+  const [ItemById, setItemById] = React.useState<RootObject | null>(null);
 
-  const getItems = async () => {
-    setLoading(true);
-    const result = await fetch(
-      `http://10.25.38.36:9090/projects/${itemId.id}`
-    ).then((r) => r.json());
+  const { data, isLoading, refetch } = useGetItemQuery(itemId.id);
 
-    setLoading(false);
-    setItemsDetails(result);
-  };
-
-  React.useEffect(() => {
-    getItems();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [itemId.id]);
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div
         style={{
@@ -73,12 +58,13 @@ export const Items = ({ itemId }: Project) => {
     >
       <div style={{ flex: "0.3" }}>
         <div style={{ marginTop: "1em" }}>
-          {itemsDetails.map((item) => (
+          {data?.map((item) => (
             <div
               key={item.versionId}
               style={{ display: "flex", cursor: "pointer", padding: "0 1rem" }}
               onClick={() => {
                 setItemById(item);
+                refetch();
               }}
             >
               <div>
@@ -90,7 +76,7 @@ export const Items = ({ itemId }: Project) => {
         </div>
       </div>
       <div style={{ flex: "0.6", marginRight: "1rem", marginTop: "-5rem" }}>
-        {ItemById && <ItemData loading={loading} itemDetails={ItemById} />}
+        {ItemById && <ItemData loading={isLoading} itemDetails={ItemById} />}
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import { useItemContentQuery } from "../features/api/getItems";
 import DataTable from "./Datatable";
 import { RootObject } from "./Items";
 import LinearIndeterminate from "./Loading";
@@ -9,25 +10,11 @@ export const ItemData = ({
   itemDetails: RootObject;
   loading: boolean;
 }) => {
-  const [responseElement, setResponseElement] = React.useState({});
-  const [loading, setLoading] = React.useState(false);
-  const postById = async () => {
-    if (!itemDetails) return;
-    setLoading(true);
-    const { response } = await fetch(`api/${itemDetails.derivativesId}`).then(
-      (r) => r.json()
-    );
-    setLoading(false);
+  const { isLoading, data, isFetching } = useItemContentQuery(
+    itemDetails.derivativesId
+  );
 
-    setResponseElement(response);
-  };
-
-  React.useEffect(() => {
-    postById();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [itemDetails]);
-
-  if (loading) {
+  if (isLoading || isFetching) {
     return (
       <div style={{ flex: "1" }}>
         <LinearIndeterminate />
@@ -47,8 +34,8 @@ export const ItemData = ({
       </div>
 
       <DataTable
-        data={responseElement}
-        loading={loading}
+        data={data?.response}
+        loading={isLoading}
         fileName={itemDetails.fileName}
       />
     </div>
