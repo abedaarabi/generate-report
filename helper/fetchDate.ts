@@ -47,14 +47,14 @@ export const fetchData = async (urn: string) => {
   const properties = await getModelviewProperties(urn, gGuid);
   const projectMetaData = properties?.data?.collection;
 
-  const resultData = hasIdentityData(projectMetaData).filter((item: any) => {
+  const resultData = hasIdentityData(projectMetaData)?.filter((item: any) => {
     return (
       item.name.includes("Basic Wall") ||
       item.name.includes("Floor") ||
       item.name.includes("Basic Roof")
     );
   });
-
+  if (!resultData) return;
   const result = getDate(resultData);
 
   const groupBy = Object.keys(result);
