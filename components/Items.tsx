@@ -58,21 +58,26 @@ export const Items = ({ itemId }: Project) => {
     >
       <div style={{ flex: "0.3" }}>
         <div style={{ marginTop: "1em" }}>
-          {data?.map((item) => (
-            <div
-              key={item.versionId}
-              style={{ display: "flex", cursor: "pointer", padding: "0 1rem" }}
-              onClick={() => {
-                setItemById(item);
-                refetch();
-              }}
-            >
-              <div>
+          {data?.map((item) => {
+            const date = new Date(item.lastModifiedTime);
+            return (
+              <div
+                key={item.versionId}
+                style={{
+                  display: "flex",
+                  cursor: "pointer",
+                  padding: "0 1rem",
+                }}
+                onClick={() => {
+                  setItemById(item);
+                  refetch();
+                }}
+              >
                 <ArticleIcon />
+                {item.fileName}
               </div>
-              <div> {item.fileName}</div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
       <div style={{ flex: "0.6", marginRight: "1rem", marginTop: "-5rem" }}>

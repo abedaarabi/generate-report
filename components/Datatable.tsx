@@ -15,39 +15,34 @@ export default function DataTable({ data, loading, fileName }: any) {
     tableData: [],
   });
   const [loadingXlsx, setLoadingXlsx] = React.useState(false);
-  const options = Object.keys(data);
+  const options = Object.keys(data) || [];
 
   const handelElement = (event: React.SyntheticEvent<any>, value: string) => {
     if (!data) return;
     try {
       const tableData = Object.values(data[value]);
 
-      const columns = Object.keys(tableData[0])
-        .map((i) => {
-          if (i === "Sum" || i === "id") {
-            return {
-              field: i,
-              headerName: i,
-              width: 80,
-            };
-          } else if (i === "Basic Wall - Types") {
-            return {
-              field: i,
-              headerName: i,
-              width: 180,
-            };
-          }
+      const columns = Object.keys(tableData[0]).map((i) => {
+        if (i === "Sum" || i === "id") {
           return {
             field: i,
             headerName: i,
-            width: 140,
+            width: 80,
           };
-        })
-        .concat({
-          field: "Total Width",
-          headerName: "Total Width",
+        } else if (i === "Basic Wall - Types") {
+          return {
+            field: i,
+            headerName: i,
+            width: 180,
+          };
+        }
+        return {
+          field: i,
+          headerName: i,
           width: 140,
-        });
+        };
+      });
+
       setTableElement({ tableData, columns });
     } catch (error) {}
   };
@@ -60,6 +55,13 @@ export default function DataTable({ data, loading, fileName }: any) {
         flexDirection: "column",
       }}
     >
+      <div>
+        <ChartData
+          labels={tableElement.tableData}
+          data={tableElement.tableData}
+          allElement={data}
+        />
+      </div>
       <div
         style={{
           width: "100%",
@@ -111,12 +113,6 @@ export default function DataTable({ data, loading, fileName }: any) {
           rowsPerPageOptions={[5]}
           checkboxSelection
           autoHeight
-        />
-      </div>
-      <div>
-        <ChartData
-          labels={tableElement.tableData}
-          data={tableElement.tableData}
         />
       </div>
     </div>

@@ -4,12 +4,14 @@ import { RootObject } from "../../components/Items";
 export const items = createApi({
   reducerPath: "items",
   baseQuery: fetchBaseQuery({ baseUrl: "http://10.25.38.36:9090/" }),
+  tagTypes: ["items"],
   endpoints: (builder) => ({
     getItem: builder.query<RootObject[], string>({
       query: (itemId) => `projects/${itemId}`,
     }),
     getItemContent: builder.query<any, string>({
       query: (itemContentId) => `projects/${itemContentId}`,
+      providesTags: ["items"],
     }),
   }),
 });

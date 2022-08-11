@@ -20,7 +20,7 @@ export default function handler(
       //@ts-ignore
 
       res.send(imageBuffer);
-    }, 2000);
+    }, 500);
   } catch (e) {
     //@ts-ignore
     res.status(400).json({ error: true, message: "Image not found" });

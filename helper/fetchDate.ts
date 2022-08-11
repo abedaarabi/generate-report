@@ -55,7 +55,7 @@ export const fetchData = async (urn: string) => {
     );
   });
   if (!resultData) return;
-  const result = getDate(resultData);
+  const result = await getDate(resultData);
 
   const groupBy = Object.keys(result);
   const dataObj = Object.values(result);
