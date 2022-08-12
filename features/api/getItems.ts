@@ -8,11 +8,15 @@ export const items = createApi({
   endpoints: (builder) => ({
     getItem: builder.query<RootObject[], string>({
       query: (itemId) => `projects/${itemId}`,
-    }),
-    getItemContent: builder.query<any, string>({
-      query: (itemContentId) => `projects/${itemContentId}`,
+      transformResponse: (res: RootObject[]) => {
+        return res.filter((item) => item.fileName.includes("K09"));
+      },
       providesTags: ["items"],
     }),
+    // getItemContent: builder.query<RootObject[], string>({
+    //   query: (itemContentId) => `projects/${itemContentId}`,
+
+    // }),
   }),
 });
 

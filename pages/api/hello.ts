@@ -6,6 +6,9 @@ type Data = {
   name: any;
 };
 
-export default function handler(req: NextApiRequest, res: any) {
+export default function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<Data>
+) {
   res.status(200).json({ name: "data as any" });
 }

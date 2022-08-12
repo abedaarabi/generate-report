@@ -48,6 +48,7 @@ export const Items = ({ itemId }: Project) => {
       </div>
     );
   }
+
   return (
     <div
       style={{
@@ -59,7 +60,6 @@ export const Items = ({ itemId }: Project) => {
       <div style={{ flex: "0.3" }}>
         <div style={{ marginTop: "1em" }}>
           {data?.map((item) => {
-            const date = new Date(item.lastModifiedTime);
             return (
               <div
                 key={item.versionId}

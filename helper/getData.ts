@@ -3,25 +3,38 @@ import { getXlsxValues } from "./xlsxreder";
 export async function getDate(data) {
   const xlsx = await getXlsxValues();
 
-  const obj1 = data.reduce((acc, elment) => {
-    const wallName = elment.name;
-    const wWallName = wallName.split("[")[0];
+  const obj1 = data.reduce((acc, element) => {
+    const wallName = element.name;
+
+    const wWallName = wallName.includes("med")
+      ? wallName.split("med")[0]
+      : wallName.split("[")[0];
     acc[wWallName] = {};
     return acc;
   }, {});
 
   for (let wall of data) {
-    const wallTypes = wall.properties["Identity Data"]["Type Name"];
-    const foundation = wall.properties["Dimensions"]["Volume"];
-    const totalVolume = Number(foundation.split("m^3")[0]);
+    const wallTypes = wall["Type Name"];
+
     const unit = xlsx[wallTypes] ? xlsx[wallTypes]["Written Uint"] : "no unit";
 
-    const wallArea = wall.properties["Dimensions"][unit];
+    const elementByUnit = wall[unit];
 
-    // const totalArea = Number(wallArea.split("m^2")[0]);
-    // console.log(totalArea);
+    let totalByUnit = 0;
+    if (unit === "Volume") {
+      totalByUnit = Number(elementByUnit.split("m^3")[0]);
+    } else if (unit === "Area") {
+      totalByUnit = Number(elementByUnit.split("m^2")[0]);
+    } else if (unit === "Length") {
+      totalByUnit = Number(elementByUnit.split("mm")[0]) / 1000;
+    } else if (unit === "Count") {
+      totalByUnit++;
+    }
+
     const wallName = wall.name;
-    const wWallName = wallName.split("[")[0];
+    const wWallName = wallName.includes("med")
+      ? wallName.split("med")[0]
+      : wallName.split("[")[0];
 
     if (!obj1[wWallName][wallTypes]) {
       obj1[wWallName][wallTypes] = {
@@ -34,20 +47,20 @@ export async function getDate(data) {
         ["Total Hours"]: 0,
       };
     }
-    obj1[wWallName][wallTypes]["Total"] += totalVolume;
+    obj1[wWallName][wallTypes]["Total"] += totalByUnit;
     obj1[wWallName][wallTypes]["Unit"] = xlsx[wallTypes]
-      ? xlsx[wallTypes]["Unit"]
+      ? xlsx[wallTypes]["Units"]
       : "no unit";
 
     obj1[wWallName][wallTypes].id = wall.externalId;
     obj1[wWallName][wallTypes]["Total Price"] += xlsx[wallTypes]
-      ? totalVolume * +xlsx[wallTypes]["Price"]
+      ? totalByUnit * +xlsx[wallTypes]["Price per unit"]
       : 0;
 
     obj1[wWallName][wallTypes].Sum++;
 
     obj1[wWallName][wallTypes]["Total Hours"] += xlsx[wallTypes]
-      ? totalVolume * xlsx[wallTypes]["Hour"]
+      ? totalByUnit * xlsx[wallTypes]["Hours per unit"]
       : 0;
   }
 

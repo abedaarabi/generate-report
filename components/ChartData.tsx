@@ -1,9 +1,9 @@
 import React from "react";
-import { Line, Bar, Pie } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import Chart from "chart.js/auto";
 import { CategoryScale } from "chart.js";
 
-const ChartData = ({ data, allElement }: any) => {
+const ChartData = ({ allElement }: any) => {
   Chart.register(CategoryScale);
   const label1 = Object.keys(allElement);
   const data1 = label1.map((i) => {
@@ -19,8 +19,6 @@ const ChartData = ({ data, allElement }: any) => {
         { price: 0, hours: 0 }
       );
   });
-
-  console.log(data1.map((i) => i["hours"]));
 
   return (
     <div style={{ marginBottom: "1rem" }}>

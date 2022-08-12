@@ -33,11 +33,15 @@ export const ItemData = ({
         </h4>
       </div>
 
-      <DataTable
-        data={data?.response}
-        loading={isLoading}
-        fileName={itemDetails.fileName}
-      />
+      {data?.response ? (
+        <DataTable
+          data={data?.response}
+          loading={isLoading}
+          fileName={itemDetails.fileName}
+        />
+      ) : (
+        []
+      )}
     </div>
   );
 };

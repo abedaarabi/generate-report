@@ -51,11 +51,13 @@ export const fetchData = async (urn: string) => {
     return (
       item.name.includes("Basic Wall") ||
       item.name.includes("Floor") ||
-      item.name.includes("Basic Roof")
+      item.name.includes("Basic Roof") ||
+      item.name.includes("Udvendig ét fags vindue med fast karm_WI_M")
     );
   });
   if (!resultData) return;
-  const result = await getDate(resultData);
+  const topLevelElement = resultData.map((element) => topLevelObj(element));
+  const result = await getDate(topLevelElement);
 
   const groupBy = Object.keys(result);
   const dataObj = Object.values(result);
@@ -137,3 +139,34 @@ async function oAuth2() {
 
   return credentials.access_token;
 }
+
+const dummyObject = {
+  name: "key not exist",
+
+  externalId: "key not exist",
+  "Type Name": "key not exist",
+
+  Length: "key not exist",
+  Area: "key not exist",
+  Volume: "key not exist",
+  Width: "key not exist",
+};
+
+const isObj = (obj) => typeof obj === "object" && !Array.isArray(obj);
+const topLevelObj = (obj) => {
+  let item = {};
+  for (const key in obj) {
+    if (isObj(obj[key])) {
+      const result = topLevelObj(obj[key]);
+
+      item = { ...item, ...result };
+    } else {
+      if (Object.keys(dummyObject).includes(key)) {
+        // item[key] = obj[key];
+
+        item = { ...item, [key]: obj[key] };
+      }
+    }
+  }
+  return item;
+};
