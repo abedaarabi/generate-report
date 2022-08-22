@@ -11,7 +11,15 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const filePath = path.join(process.cwd(), `/output/metadata_cost.xlsx`);
+  const { fileName } = req.query;
+
+  let filePath;
+
+  if (fileName === "tem") {
+    filePath = path.join(process.cwd(), `/output/metadata_cost.xlsx`);
+  } else {
+    filePath = path.join(process.cwd(), `/output/cost-template.xlsx`);
+  }
   try {
     const imageBuffer = fs.readFileSync(filePath);
     // res.setHeader("Content-Type", "files/test.txt");

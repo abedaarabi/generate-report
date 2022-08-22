@@ -57,6 +57,7 @@ export const fetchData = async (urn: string) => {
   });
   if (!resultData) return;
   const topLevelElement = resultData.map((element) => topLevelObj(element));
+
   const result = await getDate(topLevelElement);
 
   const groupBy = Object.keys(result);

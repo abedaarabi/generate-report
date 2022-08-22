@@ -80,6 +80,7 @@ export const Items = ({ itemId }: Project) => {
           })}
         </div>
       </div>
+
       <div style={{ flex: "0.6", marginRight: "1rem", marginTop: "-5rem" }}>
         {ItemById && <ItemData loading={isLoading} itemDetails={ItemById} />}
       </div>

@@ -14,6 +14,7 @@ export const ItemData = ({
     itemDetails.derivativesId
   );
 
+
   if (isLoading || isFetching) {
     return (
       <div style={{ flex: "1" }}>
@@ -21,6 +22,7 @@ export const ItemData = ({
       </div>
     );
   }
+
   return (
     <div>
       <div
