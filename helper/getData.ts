@@ -12,7 +12,7 @@ export async function getDate(data) {
     acc[wWallName] = {};
     return acc;
   }, {});
-
+  console.log(obj1);
   for (let wall of data) {
     const wallTypes = wall["Type Name"];
 
@@ -24,7 +24,11 @@ export async function getDate(data) {
     if (unit === "Volume") {
       totalByUnit = Number(elementByUnit.split("m^3")[0]);
     } else if (unit === "Area") {
-      totalByUnit = Number(elementByUnit.split("m^2")[0]);
+      totalByUnit = Number(
+        elementByUnit.includes("m^2")
+          ? elementByUnit.split("m^2")[0]
+          : elementByUnit.split("m2")[0]
+      );
     } else if (unit === "Length") {
       totalByUnit = Number(elementByUnit.split("mm")[0]) / 1000;
     } else if (unit === "Count") {

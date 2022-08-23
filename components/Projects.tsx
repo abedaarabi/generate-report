@@ -28,6 +28,8 @@ export const Projects = ({ projects }: ProjectType) => {
   }, [loading]);
 
   const handelData = (data) => {
+
+
     return data;
     // console.log("abed", data.response);
   };
