@@ -46,7 +46,7 @@ export const ReadXlsx = ({ title, color, btn, btnData }: ReadXlsxProps) => {
   };
 
   const readUploadFile = (e: any) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (e.target.files) {
       const reader = new FileReader();
       reader.onload = async (e) => {

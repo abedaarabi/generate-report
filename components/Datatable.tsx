@@ -9,18 +9,19 @@ import axios from "axios";
 
 import ChartData from "./ChartData";
 
-export default function DataTable({ data, loading, fileName }: any) {
+export default function DataTable({ data, loading, fileName, xlsx }: any) {
   const [tableElement, setTableElement] = React.useState({
     columns: [],
     tableData: [],
   });
   const [loadingXlsx, setLoadingXlsx] = React.useState(false);
-  const options = Object.keys(data) || [];
+
+  const options = Object.keys(data || xlsx) || [];
 
   const handelElement = (event: React.SyntheticEvent<any>, value: string) => {
     if (!data) return;
     try {
-      const tableData = Object.values(data[value]);
+      const tableData = Object.values(data[value] || xlsx[value]);
 
       const columns = Object.keys(tableData[0]).map((i) => {
         if (i === "Sum" || i === "id") {
@@ -55,11 +56,12 @@ export default function DataTable({ data, loading, fileName }: any) {
         flexDirection: "column",
       }}
     >
+      <div style={{ margin: "1em 0" }}></div>
       <div>
         <ChartData
           labels={tableElement.tableData}
           data={tableElement.tableData}
-          allElement={data}
+          allElement={data || xlsx}
         />
       </div>
       <div

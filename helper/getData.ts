@@ -12,7 +12,7 @@ export async function getDate(data) {
     acc[wWallName] = {};
     return acc;
   }, {});
-  console.log(obj1);
+
   for (let wall of data) {
     const wallTypes = wall["Type Name"];
 

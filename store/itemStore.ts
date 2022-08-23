@@ -1,8 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { items, itemContent } from "../features/api/getItems";
+import excelReducer from "../features/xlsxData/xlsxReducer";
 
 export const store = configureStore({
   reducer: {
+    excelData: excelReducer,
     [items.reducerPath]: items.reducer,
     [itemContent.reducerPath]: itemContent.reducer,
   },

@@ -3,7 +3,9 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Items, Project } from "./Items";
 import { ReadXlsx } from "./ReadXlsx";
-
+import { useSelector, useDispatch } from "react-redux";
+import { increment } from "../features/xlsxData/xlsxReducer";
+import DataTable from "./Datatable";
 export interface ProjectType {
   projects: {
     label: string;
@@ -14,7 +16,9 @@ export interface ProjectType {
 
 export const Projects = ({ projects }: ProjectType) => {
   const [loading, setLoading] = React.useState(false);
-
+  const dispatch = useDispatch();
+  const { excelData } = useSelector((state) => state as any);
+  const xlsxData = excelData.date.payload;
   const [itemDetails, setItemDetails] = React.useState<Project["itemId"]>();
   const handleItemId = (
     event: React.SyntheticEvent<Element, Event>,
@@ -28,9 +32,7 @@ export const Projects = ({ projects }: ProjectType) => {
   }, [loading]);
 
   const handelData = (data) => {
-
-
-    return data;
+    dispatch(increment(data.response));
     // console.log("abed", data.response);
   };
 
@@ -69,6 +71,9 @@ export const Projects = ({ projects }: ProjectType) => {
       </div>
       <div style={{ padding: "0 1rem" }}>
         {itemDetails?.id && <Items itemId={itemDetails} />}
+      </div>
+      <div style={{ padding: "0 1rem" }}>
+        {xlsxData && <DataTable xlsx={xlsxData} />}
       </div>
     </div>
   );
