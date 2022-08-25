@@ -1,18 +1,30 @@
 import React from "react";
-import { useItemContentQuery } from "../features/api/getItems";
+import { useLazyItemContentQuery } from "../features/api/getItems";
 import DataTable from "./Datatable";
 import { RootObject } from "./Items";
 import LinearIndeterminate from "./Loading";
 
 export const ItemData = ({
   itemDetails,
+  xlsxData,
 }: {
-  itemDetails: RootObject;
+  xlsxData: any;
+  itemDetails: RootObject | undefined | null;
   loading: boolean;
 }) => {
-  const { isLoading, data, isFetching } = useItemContentQuery(
-    itemDetails.derivativesId
-  );
+  // const { isLoading, data, isFetching } = useItemContentQuery(
+  //   itemDetails.derivativesId
+  // );
+
+  const [trigger, { isLoading, data, isFetching }] = useLazyItemContentQuery();
+
+  React.useEffect(() => {
+    if (itemDetails) {
+      trigger(itemDetails.derivativesId);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [itemDetails, xlsxData]);
+  React.useEffect(() => {}, [, xlsxData]);
 
   if (isLoading || isFetching) {
     return (
@@ -21,6 +33,10 @@ export const ItemData = ({
       </div>
     );
   }
+  const file = !itemDetails?.fileName
+    ? `Material List -  ${new Date().toUTCString()}`
+    : itemDetails?.fileName;
+
 
   return (
     <div>
@@ -30,15 +46,15 @@ export const ItemData = ({
         }}
       >
         <h4 style={{ color: "#43a047", textDecoration: "underline" }}>
-          {itemDetails.fileName}:{" "}
+          {file}
         </h4>
       </div>
 
-      {data?.response ? (
+      {data?.response || xlsxData ? (
         <DataTable
-          data={data?.response}
+          data={data?.response || xlsxData}
           loading={isLoading}
-          fileName={itemDetails.fileName}
+          fileName={file}
         />
       ) : (
         []

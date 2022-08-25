@@ -32,5 +32,5 @@ export const itemContent = createApi({
   }),
 });
 
-export const { useGetItemQuery } = items;
-export const { useItemContentQuery } = itemContent;
+export const { useGetItemQuery ,useLazyGetItemQuery} = items;
+export const { useItemContentQuery,useLazyItemContentQuery } = itemContent;

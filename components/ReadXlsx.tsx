@@ -4,6 +4,9 @@ import Button from "@mui/material/Button";
 const xlsx = require("xlsx");
 import axios from "axios";
 var fileDownload = require("js-file-download");
+
+import { useDispatch } from "react-redux";
+import { increment } from "../features/xlsxData/xlsxReducer";
 interface ReadXlsxProps {
   title: string;
   color?:
@@ -16,11 +19,10 @@ interface ReadXlsxProps {
     | "warning"
     | undefined;
   btn?: boolean;
-  btnData?: any;
 }
-export const ReadXlsx = ({ title, color, btn, btnData }: ReadXlsxProps) => {
+export const ReadXlsx = ({ title, color, btn }: ReadXlsxProps) => {
   const [loadingXlsx, setLoadingXlsx] = React.useState(false);
-
+  const dispatch = useDispatch();
   // const uploadToClient = (event: { target: { files: any[] } }) => {
   //   if (event.target.files && event.target.files[0]) {
   //     const i = event.target;
@@ -41,25 +43,29 @@ export const ReadXlsx = ({ title, color, btn, btnData }: ReadXlsxProps) => {
         return response.json();
       })
       .then(function (data) {
-        btnData(data);
+        dispatch(increment(data.response));
       });
   };
 
   const readUploadFile = (e: any) => {
-    // e.preventDefault();
+    e.preventDefault();
     if (e.target.files) {
       const reader = new FileReader();
-      reader.onload = async (e) => {
-        const data = e.target.result;
+      try {
+        reader.onload = async (e) => {
+          const data = e.target.result;
 
-        const workbook = xlsx.read(data, { type: "array" });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const json = await xlsx.utils.sheet_to_json(worksheet);
+          const workbook = xlsx.read(data, { type: "array" });
+          const sheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[sheetName];
+          const json = await xlsx.utils.sheet_to_json(worksheet);
 
-        await uploadToServer(json);
-      };
-      reader.readAsArrayBuffer(e.target.files[0]);
+          await uploadToServer(json);
+        };
+        reader.readAsArrayBuffer(e.target.files[0]);
+      } catch (error) {
+        throw new Error("Select File");
+      }
     }
   };
 
@@ -72,7 +78,7 @@ export const ReadXlsx = ({ title, color, btn, btnData }: ReadXlsxProps) => {
     const pdfBlob = new Blob([data]);
 
     setLoadingXlsx(false);
-    return fileDownload(pdfBlob, `material-template.xlsx`);
+    return fileDownload(pdfBlob, `cost-template.xlsx`);
   };
 
   return (

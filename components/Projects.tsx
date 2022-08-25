@@ -3,9 +3,8 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { Items, Project } from "./Items";
 import { ReadXlsx } from "./ReadXlsx";
-import { useSelector, useDispatch } from "react-redux";
-import { increment } from "../features/xlsxData/xlsxReducer";
-import DataTable from "./Datatable";
+import { useSelector } from "react-redux";
+
 export interface ProjectType {
   projects: {
     label: string;
@@ -16,9 +15,10 @@ export interface ProjectType {
 
 export const Projects = ({ projects }: ProjectType) => {
   const [loading, setLoading] = React.useState(false);
-  const dispatch = useDispatch();
+
   const { excelData } = useSelector((state) => state as any);
   const xlsxData = excelData.date.payload;
+
   const [itemDetails, setItemDetails] = React.useState<Project["itemId"]>();
   const handleItemId = (
     event: React.SyntheticEvent<Element, Event>,
@@ -29,12 +29,7 @@ export const Projects = ({ projects }: ProjectType) => {
   };
   React.useEffect(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading]);
-
-  const handelData = (data) => {
-    dispatch(increment(data.response));
-    // console.log("abed", data.response);
-  };
+  }, [loading, xlsxData]);
 
   return (
     <div>
@@ -42,11 +37,7 @@ export const Projects = ({ projects }: ProjectType) => {
         <div style={{ margin: "1em", padding: "0 1rem" }}>
           <div style={{ margin: "1em 0" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
-              <ReadXlsx
-                title="Upload Material List"
-                color="secondary"
-                btnData={handelData}
-              />
+              <ReadXlsx title="Upload Material List" color="secondary" />
               <div style={{ paddingLeft: "10px" }}>
                 <ReadXlsx title=" Download Template" color="success" btn />
               </div>
@@ -70,10 +61,9 @@ export const Projects = ({ projects }: ProjectType) => {
         </div>
       </div>
       <div style={{ padding: "0 1rem" }}>
-        {itemDetails?.id && <Items itemId={itemDetails} />}
-      </div>
-      <div style={{ padding: "0 1rem" }}>
-        {xlsxData && <DataTable xlsx={xlsxData} />}
+        {(itemDetails?.id || xlsxData) && (
+          <Items itemId={itemDetails} xlsx={xlsxData} />
+        )}
       </div>
     </div>
   );

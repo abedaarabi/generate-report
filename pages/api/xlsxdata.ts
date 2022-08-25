@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 // import formidable from "formidable";
 
 import { getDate } from "../../helper/getData";
+import { writeToXlsx } from "../../helper/writeToXlsx";
 
 export const config = {
   api: {
@@ -16,7 +17,7 @@ export default async function handler(
   if (req.method === "POST") {
     try {
       const result = await getDate(payload);
-
+      await writeToXlsx(result);
       res
         .status(200)
         .json({ message: "Data Fetched successfully!", response: result });

@@ -9,7 +9,12 @@ import axios from "axios";
 
 import ChartData from "./ChartData";
 
-export default function DataTable({ data, loading, fileName, xlsx }: any) {
+export default function DataTable({
+  data,
+  loading,
+  fileName,
+  xlsx,
+}: any | undefined) {
   const [tableElement, setTableElement] = React.useState({
     columns: [],
     tableData: [],
@@ -47,6 +52,10 @@ export default function DataTable({ data, loading, fileName, xlsx }: any) {
       setTableElement({ tableData, columns });
     } catch (error) {}
   };
+
+  React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [xlsx]);
 
   return (
     <div

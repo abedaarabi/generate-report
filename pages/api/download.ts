@@ -15,10 +15,10 @@ export default function handler(
 
   let filePath;
 
-  if (fileName === "tem") {
-    filePath = path.join(process.cwd(), `/output/metadata_cost.xlsx`);
-  } else {
+  if (fileName === "temp") {
     filePath = path.join(process.cwd(), `/output/cost-template.xlsx`);
+  } else {
+    filePath = path.join(process.cwd(), `/output/metadata_cost.xlsx`);
   }
   try {
     const imageBuffer = fs.readFileSync(filePath);

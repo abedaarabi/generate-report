@@ -1,7 +1,8 @@
 import { getDate } from "./getData";
+import { writeToXlsx } from "./writeToXlsx";
 
 const ForgeSDK = require("forge-apis");
-const xlsx = require("xlsx");
+
 const { ModelDerivativeClient, ManifestHelper } = require("forge-server-utils");
 // const { SvfReader, GltfWriter } = require("forge-convert-utils");
 const { default: axios } = require("axios");
@@ -60,22 +61,7 @@ export const fetchData = async (urn: string) => {
 
   const result = await getDate(topLevelElement);
 
-  const groupBy = Object.keys(result);
-  const dataObj = Object.values(result);
-
-  const yy = dataObj.map((d, idx) => {
-    const val = Object.values(d);
-
-    return val;
-  });
-
-  const newWB = xlsx.utils.book_new();
-  groupBy.forEach((val, idx) => {
-    const newWS = xlsx.utils.json_to_sheet(yy[idx]);
-
-    xlsx.utils.book_append_sheet(newWB, newWS, val);
-    xlsx.writeFile(newWB, "output/metadata_cost.xlsx");
-  });
+  await writeToXlsx(result);
 
   return result;
 };

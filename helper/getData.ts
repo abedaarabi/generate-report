@@ -22,15 +22,22 @@ export async function getDate(data) {
 
     let totalByUnit = 0;
     if (unit === "Volume") {
-      totalByUnit = Number(elementByUnit.split("m^3")[0]);
+      const totalVolume = Number(elementByUnit.split("m^3")[0]);
+
+      totalByUnit += totalVolume;
     } else if (unit === "Area") {
-      totalByUnit = Number(
+      const totalArea = Number(
         elementByUnit.includes("m^2")
           ? elementByUnit.split("m^2")[0]
           : elementByUnit.split("m2")[0]
       );
+      totalByUnit += totalArea;
     } else if (unit === "Length") {
-      totalByUnit = Number(elementByUnit.split("mm")[0]) / 1000;
+      const totalLength = Number(elementByUnit.split("mm")[0]) / 1000;
+
+      totalByUnit += totalLength;
+    } else if (unit === "Count" && wall["Count"] >= 1) {
+      totalByUnit += wall["Count"];
     } else if (unit === "Count") {
       totalByUnit++;
     }
@@ -61,7 +68,7 @@ export async function getDate(data) {
       ? totalByUnit * +xlsx[wallTypes]["Price per unit"]
       : 0;
 
-    obj1[wWallName][wallTypes].Sum++;
+    obj1[wWallName][wallTypes].Sum += totalByUnit;
 
     obj1[wWallName][wallTypes]["Total Hours"] += xlsx[wallTypes]
       ? totalByUnit * xlsx[wallTypes]["Hours per unit"]
