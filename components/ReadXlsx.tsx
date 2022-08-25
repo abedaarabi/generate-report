@@ -85,7 +85,7 @@ export const ReadXlsx = ({ title, color, btn }: ReadXlsxProps) => {
     <div>
       {btn ? (
         <Button variant="contained" color={color} onClick={downloadXlsxTemp}>
-          {loadingXlsx ? "preparing the file..." : "Download Data in Excel"}
+          {loadingXlsx ? "preparing the Template..." : "Download Cost Template"}
         </Button>
       ) : (
         <Button variant="contained" component="label" color={color}>

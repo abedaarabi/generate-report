@@ -35,8 +35,8 @@ const ChartData = ({ allElement }: any) => {
             </h4>
           </div>
           <Bar
-            height={150}
-            width={650}
+            height={70}
+            width={550}
             datasetIdKey="id"
             data={{
               labels: label1 || [],
@@ -68,8 +68,8 @@ const ChartData = ({ allElement }: any) => {
             }}
           />
           <Bar
-            height={150}
-            width={650}
+            height={70}
+            width={550}
             datasetIdKey="id"
             data={{
               labels: label1 || [],
