@@ -4,6 +4,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { Items, Project } from "./Items";
 import { ReadXlsx } from "./ReadXlsx";
 import { useSelector } from "react-redux";
+import { Button } from "./btn/Button";
 
 export interface ProjectType {
   projects: {
@@ -37,6 +38,15 @@ export const Projects = ({ projects }: ProjectType) => {
         <div style={{ margin: "1em", padding: "0 1rem" }}>
           <div style={{ margin: "1em 0" }}>
             <div style={{ display: "flex", alignItems: "center" }}>
+              <div
+                style={{
+                  margin: "10px",
+                }}
+              >
+                <Button style={{ backgroundColor: "#e63946" }} href={"/"}>
+                  Back
+                </Button>
+              </div>
               <ReadXlsx title="Upload Material List" color="secondary" />
               <div style={{ paddingLeft: "10px" }}>
                 <ReadXlsx title=" Download Template" color="success" btn />
